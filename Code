@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trip Planner</title>
+    <style>
+        body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Trip Planner!</h1>
+    <form>
+        <label>Select a destination:</label>
+        <select id="destination-select">
+            <option value="1">Delhi</option>
+            <option value="2">Mumbai</option>
+            <option value="3">Jaipur</option>
+            <option value="4">Hyderabad</option>
+            <option value="5">Chennai</option>
+            <option value="6">Pondicherry</option>
+        </select>
+        <br><br>
+        <label for="start-date">Start Date:</label>
+        <input type="date" id="start-date" required>
+        <br><br>
+        <label for="end-date">End Date:</label>
+        <input type="date" id="end-date" required>
+        <br><br>
+        <input type="button" value="Plan Trip" onclick="planTrip()">
+    </form>
+
+    <div id="trip-itinerary" style="display: none;">
+        <h2>Trip Description</h2>
+        <p id="destination-name"></p>
+        <p id="start-date-display"></p>
+        <p id="end-date-display"></p>
+        <p id="duration-display"></p>
+        <h3>Places to Visit in Your Duration:</h3>
+        <ul id="places-list"></ul>
+    </div>
+
+    <script>
+        function planTrip() {
+            var destinationSelect = document.getElementById("destination-select");
+            var destinationChoice = destinationSelect.value;
+
+            var startDate = document.getElementById("start-date").value;
+            var endDate = document.getElementById("end-date").value;
+
+            var destination = destinations[destinationChoice];
+            var tripDuration = calculateDuration(startDate, endDate);
+
+            document.getElementById("destination-name").innerHTML = "Destination: " + destination.name;
+            document.getElementById("start-date-display").innerHTML = "Start Date: " + startDate;
+            document.getElementById("end-date-display").innerHTML = "End Date: " + endDate;
+            document.getElementById("duration-display").innerHTML = "Duration: " + tripDuration + " days";
+
+            var placesList = document.getElementById("places-list");
+            placesList.innerHTML = "";
+            destination.places_to_visit.forEach(function(place) {
+                var listItem = document.createElement("li");
+                listItem.innerHTML = place;
+                placesList.appendChild(listItem);
+            });
+
+            document.getElementById("trip-itinerary").style.display = "block";
+        }
+
+        function calculateDuration(start, end) {
+            var startDate = new Date(start);
+            var endDate = new Date(end);
+            var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+            var duration = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            return duration;
+        }
+
+        var destinations = {
+            "1": {
+                "name": "Delhi",
+                "places_to_visit": ["Red Fort", "Qutub Minar", "India Gate"]
+            },
+            "2": {
+                "name": "Mumbai",
+                "places_to_visit": ["Gateway of India", "Marine Drive", "Elephanta Caves"]
+            },
+            "3": {
+                "name": "Jaipur",
+                "places_to_visit": ["Amber Fort", "Hawa Mahal", "City Palace"]
+            },
+            "4": {
+                "name": "Hyderabad",
+                "places_to_visit": ["Charminar", "Birlamandir", "Hussain Sagar"]
+            },
+            "5": {
+                "name": "Chennai",
+                "places_to_visit": ["Marina Beach", "Government Museum", "Kapaleeswarar Temple"]
+            },
+            "6": {
+                "name": "Pondicherry",
+                "places_to_visit": ["Paradise Beach", "Rock Beach", "Seaside Promenade"]
+            }
+        };
+    </script>
+</body>
+</html>
+ 
